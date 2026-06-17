@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dra. Marina Schneider | Cirurgia Plástica em Blumenau</title>
+    
+    <!-- Google Fonts para Tipografia Elegante -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (Framework de Estilos) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Ícones Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Configuração de Cores da Marca -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gelo: '#fafafa', /* Fundo quase branco gelo */
+                        pessego: {
+                            100: '#fdeee9',
+                            200: '#fbdcd0',
+                            300: '#f8c2b0', /* Rosinha meio pêssego principal */
+                            400: '#f3a088',
+                            500: '#eb795a',
+                            600: '#d95a38',
+                        },
+                        dourado: '#c5a365', /* Tom de destaque sofisticado */
+                        texto: {
+                            light: '#64748b',
+                            dark: '#334155',
+                            titulo: '#0f172a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos adicionais sutis */
+        body { background-color: #fafafa; color: #334155; }
+        .glass-header {
+            background: rgba(250, 250, 250, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        .img-placeholder {
+            background-color: #fdeee9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f3a088;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-pessego-300 selection:text-white flex flex-col min-h-screen items-center justify-center bg-gelo">
+
+    <main class="w-full max-w-lg mx-auto px-4 py-8">
+        <div class="bg-white rounded-3xl shadow-xl border border-pessego-100 p-8 sm:p-12 text-center">
+            
+            <!-- Logo Temporária -->
+            <div class="w-16 h-16 mx-auto rounded-full bg-pessego-300 flex items-center justify-center text-white font-serif italic font-bold text-3xl mb-6 shadow-sm">
+                M
+            </div>
+
+            <h1 class="font-serif font-semibold text-titulo text-2xl sm:text-3xl tracking-wide mb-1">Dra. Marina Schneider</h1>
+            <h2 class="text-xs text-pessego-600 uppercase tracking-widest font-medium mb-8">Cirurgia Plástica</h2>
+
+            <!-- Caixa de Aviso -->
+            <div class="bg-pessego-50 rounded-2xl p-6 mb-8 border border-pessego-100">
+                <i class="ph ph-clock-user text-4xl text-pessego-400 mb-3"></i>
+                <h3 class="text-lg font-medium text-titulo mb-2">Site em Construção</h3>
+                <p class="text-texto-light text-sm">
+                    Em breve, um novo espaço dedicado à sua beleza e bem-estar.<br>
+                    <strong class="text-pessego-600 font-medium block mt-2">Atendimentos em Blumenau e São Paulo.</strong>
+                </p>
+            </div>
+
+            <!-- Contatos -->
+            <div class="space-y-4">
+                <a href="https://wa.me/5547999644799" target="_blank" class="w-full flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-pessego-400 hover:bg-pessego-500 transition-all shadow-md shadow-pessego-200">
+                    <i class="ph ph-whatsapp-logo text-2xl mr-2"></i>
+                    (47) 99964-4799
+                </a>
+                
+                <a href="mailto:dramarina@marinaschneider.com.br" class="w-full flex items-center justify-center px-6 py-3 border-2 border-pessego-100 text-base font-medium rounded-full text-texto-dark hover:bg-pessego-50 hover:border-pessego-200 transition-all">
+                    <i class="ph ph-envelope-simple text-xl mr-2 text-pessego-400"></i>
+                    Enviar E-mail
+                </a>
+            </div>
+
+            <p class="text-xs text-texto-light mt-8 font-medium">dramarina@marinaschneider.com.br</p>
+        </div>
+    </main>
+
+</body>
+</html>
