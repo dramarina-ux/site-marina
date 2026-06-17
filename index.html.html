@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dra. Marina Schneider | Cirurgia Plástica em Blumenau</title>
+    
+    <!-- Google Fonts para Tipografia Elegante -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (Framework de Estilos) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Ícones Phosphor -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Configuração de Cores da Marca -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gelo: '#fafafa', /* Fundo quase branco gelo */
+                        pessego: {
+                            100: '#fdeee9',
+                            200: '#fbdcd0',
+                            300: '#f8c2b0', /* Rosinha meio pêssego principal */
+                            400: '#f3a088',
+                            500: '#eb795a',
+                            600: '#d95a38',
+                        },
+                        dourado: '#c5a365', /* Tom de destaque sofisticado */
+                        texto: {
+                            light: '#64748b',
+                            dark: '#334155',
+                            titulo: '#0f172a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos adicionais sutis */
+        body { background-color: #fafafa; color: #334155; }
+        .glass-header {
+            background: rgba(250, 250, 250, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        .img-placeholder {
+            background-color: #fdeee9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #f3a088;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-pessego-300 selection:text-white flex flex-col min-h-screen">
+
+    <!-- CABEÇALHO / MENU FIXO -->
+    <header class="glass-header fixed w-full top-0 z-50 border-b border-pessego-100 transition-all duration-300" id="header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#inicio" class="flex items-center gap-3">
+                        <!-- Substitua o src abaixo pelo caminho da sua logo (ex: imagens/logo.png) -->
+                        <div class="w-10 h-10 rounded-full bg-pessego-400 flex items-center justify-center text-white font-serif italic font-bold text-xl">
+                            M
+                        </div>
+                        <div class="flex flex-col">
+                            <!-- CORREÇÃO: Removido text-white, adicionado text-titulo (que é escuro) -->
+                            <span class="font-serif font-semibold text-titulo text-lg tracking-wide">Dra. Marina Schneider</span>
+                            <!-- CORREÇÃO: Escurecido o tom de pêssego para melhor contraste -->
+                            <span class="text-xs text-pessego-600 uppercase tracking-widest font-medium">Cirurgia Plástica</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Menu Desktop -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#inicio" class="text-texto-dark hover:text-pessego-500 transition-colors font-medium text-sm uppercase tracking-wider">Início</a>
+                    <a href="#sobre" class="text-texto-dark hover:text-pessego-500 transition-colors font-medium text-sm uppercase tracking-wider">Quem Sou</a>
+                    <a href="#especialidades" class="text-texto-dark hover:text-pessego-500 transition-colors font-medium text-sm uppercase tracking-wider">Especialidades</a>
+                    <a href="#contato" class="text-texto-dark hover:text-pessego-500 transition-colors font-medium text-sm uppercase tracking-wider">Contato</a>
+                </nav>
+
+                <!-- Botão CTA Desktop -->
+                <div class="hidden md:flex items-center">
+                    <a href="#contato" class="bg-pessego-300 hover:bg-pessego-400 text-white px-6 py-2 rounded-full font-medium transition-all shadow-sm hover:shadow-md text-sm uppercase tracking-wide">
+                        Agendar Consulta
+                    </a>
+                </div>
+
+                <!-- Botão Menu Mobile -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-texto-dark hover:text-pessego-500 focus:outline-none">
+                        <i class="ph ph-list text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Mobile Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gelo border-b border-pessego-100 absolute w-full">
+            <div class="px-4 pt-2 pb-6 space-y-1 shadow-lg">
+                <a href="#inicio" class="block px-3 py-3 text-base font-medium text-texto-dark hover:bg-pessego-100 hover:text-pessego-600 rounded-md">Início</a>
+                <a href="#sobre" class="block px-3 py-3 text-base font-medium text-texto-dark hover:bg-pessego-100 hover:text-pessego-600 rounded-md">Quem Sou</a>
+                <a href="#especialidades" class="block px-3 py-3 text-base font-medium text-texto-dark hover:bg-pessego-100 hover:text-pessego-600 rounded-md">Especialidades</a>
+                <a href="#contato" class="block px-3 py-3 text-base font-medium text-texto-dark hover:bg-pessego-100 hover:text-pessego-600 rounded-md">Contato</a>
+                <a href="#contato" class="block w-full text-center mt-4 bg-pessego-300 text-white px-6 py-3 rounded-full font-medium">Agendar Consulta</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="flex-grow pt-20">
+
+        <!-- SEÇÃO HERO (Banner Inicial) -->
+        <section id="inicio" class="relative bg-pessego-100/50 overflow-hidden">
+            <div class="max-w-7xl mx-auto">
+                <div class="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:w-1/2 lg:pb-28 lg:pt-32 xl:pb-32 px-4 sm:px-6 lg:px-8 pt-20">
+                    <div class="sm:text-center lg:text-left">
+                        <span class="text-pessego-600 font-medium tracking-widest text-sm uppercase mb-4 block">CRM-SC 99.999 | CRM-SP 888.888</span>
+                        <h1 class="text-4xl tracking-tight font-serif font-medium text-titulo sm:text-5xl md:text-6xl mb-6">
+                            Sua beleza natural,<br>
+                            <span class="text-pessego-600 italic">esculpida com excelência.</span>
+                        </h1>
+                        <p class="mt-3 text-base text-texto-light sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                            Atendimento humanizado e técnicas modernas de cirurgia plástica e estética corporal em Blumenau. Segurança, proporção e harmonia para a sua melhor versão.
+                        </p>
+                        <div class="mt-8 sm:flex sm:justify-center lg:justify-start gap-4">
+                            <a href="#contato" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-white bg-pessego-500 hover:bg-pessego-600 md:py-4 md:text-lg md:px-10 transition-all shadow-lg shadow-pessego-200">
+                                <i class="ph ph-whatsapp text-2xl mr-2"></i> Fale no WhatsApp
+                            </a>
+                            <a href="#especialidades" class="mt-3 w-full flex items-center justify-center px-8 py-3 border-2 border-pessego-400 text-base font-medium rounded-full text-pessego-600 bg-transparent hover:bg-pessego-50 md:py-4 md:text-lg md:px-10 transition-all sm:mt-0">
+                                Conheça os Procedimentos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Imagem lateral Desktop -->
+            <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-pessego-100 flex items-center justify-center">
+                <!-- CORREÇÃO: Link de imagem atualizado e com fallback de segurança (onerror) -->
+                <img class="h-56 w-full object-cover object-center sm:h-72 md:h-96 lg:w-full lg:h-full opacity-90 mix-blend-multiply" 
+                     src="https://images.unsplash.com/photo-1515405295579-ba7b45403062?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
+                     onerror="this.onerror=null; this.src='https://placehold.co/1000x800/fdeee9/d95a38?text=Beleza+e+Naturalidade';"
+                     alt="Conceito de fluidez, beleza e naturalidade">
+            </div>
+        </section>
+
+        <!-- SEÇÃO QUEM SOU -->
+        <section id="sobre" class="py-20 bg-gelo">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+                    
+                    <div class="mb-10 lg:mb-0 relative">
+                        <!-- Moldura decorativa -->
+                        <div class="absolute -inset-4 border-2 border-pessego-200 rounded-t-full rounded-b-3xl transform translate-x-4 translate-y-4 -z-10"></div>
+                        <!-- Foto Quem Sou -->
+                        <img class="rounded-t-full rounded-b-3xl shadow-xl object-cover w-full h-[600px]" 
+                             src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                             alt="Retrato da Médica">
+                    </div>
+
+                    <div>
+                        <h2 class="text-pessego-600 font-medium tracking-widest text-sm uppercase mb-2">Trajetória e Dedicação</h2>
+                        <h3 class="text-3xl font-serif text-titulo sm:text-4xl mb-6">Sobre a Dra. Marina</h3>
+                        <p class="text-texto-light mb-6 text-lg">
+                            Sou apaixonada por transformar vidas através da cirurgia plástica, buscando sempre resultados que respeitem a anatomia e a individualidade de cada paciente. Acredito na beleza natural e no impacto que a autoestima tem em nossa qualidade de vida.
+                        </p>
+                        
+                        <div class="space-y-6 mt-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-pessego-200 before:to-transparent">
+                            
+                            <!-- Timeline Item 1 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-pessego-300 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i class="ph ph-graduation-cap text-xl"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-pessego-100 bg-white shadow-sm">
+                                    <div class="flex items-center justify-between space-x-2 mb-1">
+                                        <div class="font-bold text-titulo">Medicina</div>
+                                        <time class="font-medium text-sm text-pessego-500">2016</time>
+                                    </div>
+                                    <div class="text-texto-light text-sm">Graduada pela Universidade Regional de Blumenau (FURB).</div>
+                                </div>
+                            </div>
+
+                            <!-- Timeline Item 2 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-pessego-300 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i class="ph ph-stethoscope text-xl"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-pessego-100 bg-white shadow-sm">
+                                    <div class="flex items-center justify-between space-x-2 mb-1">
+                                        <div class="font-bold text-titulo">Cirurgia Geral</div>
+                                        <time class="font-medium text-sm text-pessego-500">2017 - 2019</time>
+                                    </div>
+                                    <div class="text-texto-light text-sm">Residência Médica no Hospital Municipal Padre Germano, Foz do Iguaçu.</div>
+                                </div>
+                            </div>
+
+                            <!-- Timeline Item 3 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-pessego-400 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i class="ph ph-bandaids text-xl"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-pessego-100 bg-white shadow-sm">
+                                    <div class="flex items-center justify-between space-x-2 mb-1">
+                                        <div class="font-bold text-titulo">Cirurgia Plástica</div>
+                                        <time class="font-medium text-sm text-pessego-500">2023 - 2026</time>
+                                    </div>
+                                    <div class="text-texto-light text-sm">Residência em Cirurgia Plástica no Hospital de Campinas, SP.</div>
+                                </div>
+                            </div>
+
+                            <!-- Timeline Item 4 -->
+                            <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-pessego-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                                    <i class="ph ph-sparkle text-xl"></i>
+                                </div>
+                                <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-pessego-100 bg-white shadow-sm">
+                                    <div class="flex items-center justify-between space-x-2 mb-1">
+                                        <div class="font-bold text-titulo">Especialização em Estética</div>
+                                        <time class="font-medium text-sm text-pessego-500">2025</time>
+                                    </div>
+                                    <div class="text-texto-light text-sm">Estética Corporal pelo Instituto Boggio, São Paulo - SP.</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO ESPECIALIDADES -->
+        <section id="especialidades" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-pessego-500 font-medium tracking-widest text-sm uppercase mb-2">Áreas de Atuação</h2>
+                    <h3 class="text-3xl font-serif text-titulo sm:text-4xl">Procedimentos e Tratamentos</h3>
+                    <p class="mt-4 text-texto-light max-w-2xl mx-auto">Técnicas avançadas para valorizar suas curvas, restaurar proporções e realçar sua beleza única, sempre com foco absoluto na sua segurança.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Card 1 -->
+                    <div class="group bg-gelo rounded-2xl p-8 border border-gray-100 hover:border-pessego-200 transition-all hover:shadow-xl hover:-translate-y-1">
+                        <div class="w-14 h-14 bg-pessego-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-pessego-300 transition-colors">
+                            <i class="ph ph-barbell text-3xl text-pessego-600 group-hover:text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-serif font-semibold text-titulo mb-3">Contorno Corporal</h4>
+                        <p class="text-texto-light text-sm mb-4">Redefinição das formas do corpo, eliminando gordura localizada e flacidez para uma silhueta mais harmônica.</p>
+                        <ul class="text-sm text-texto-dark space-y-2">
+                            <li class="flex items-center"><i class="ph ph-check text-pessego-500 mr-2"></i> Lipoaspiração / Lipo HD</li>
+                            <li class="flex items-center"><i class="ph ph-check text-pessego-500 mr-2"></i> Abdominoplastia</li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="group bg-gelo rounded-2xl p-8 border border-gray-100 hover:border-pessego-200 transition-all hover:shadow-xl hover:-translate-y-1">
+                        <div class="w-14 h-14 bg-pessego-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-pessego-300 transition-colors">
+                            <i class="ph ph-drop text-3xl text-pessego-600 group-hover:text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-serif font-semibold text-titulo mb-3">Cirurgias da Mama</h4>
+                        <p class="text-texto-light text-sm mb-4">Aumento, redução ou elevação das mamas, buscando resultados proporcionais ao seu biotipo biológico.</p>
+                        <ul class="text-sm text-texto-dark space-y-2">
+                            <li class="flex items-center"><i class="ph ph-check text-pessego-500 mr-2"></i> Prótese de Silicone</li>
+                            <li class="flex items-center"><i class="ph ph-check text-pessego-500 mr-2"></i> Mamoplastia (Redutora/Mastopexia)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="group bg-gelo rounded-2xl p-8 border border-gray-100 hover:border-pessego-200 transition-all hover:shadow-xl hover:-translate-y-1">
+                        <div class="w-14 h-14 bg-pessego-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-pessego-300 transition-colors">
+                            <i class="ph ph-person text-3xl text-pessego-600 group-hover:text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-serif font-semibold text-titulo mb-3">Cirurgias do Glúteo</h4>
+                        <p class="text-texto-light text-sm mb-4">Técnicas de volumização e modelagem da região glútea para um contorno posterior mais atraente e firme.</p>
+                        <ul class="text-sm text-texto-dark space-y-2">
+                            <li class="flex items-center"><i class="ph ph-check text-pessego-500 mr-2"></i> Lipoenxertia Glútea</li>
+                            <li class="flex items-center"><i class="ph ph-check text-pessego-500 mr-2"></i> Gluteoplastia (Prótese)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="group bg-gelo rounded-2xl p-8 border border-gray-100 hover:border-pessego-200 transition-all hover:shadow-xl hover:-translate-y-1 md:col-span-2 lg:col-span-3 lg:w-2/3 mx-auto">
+                        <div class="w-14 h-14 bg-pessego-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-pessego-300 transition-colors mx-auto lg:mx-0">
+                            <i class="ph ph-magic-wand text-3xl text-pessego-600 group-hover:text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-serif font-semibold text-titulo mb-3 text-center lg:text-left">Estética e Procedimentos Minimamente Invasivos</h4>
+                        <p class="text-texto-light text-sm mb-4 text-center lg:text-left">Opções não cirúrgicas para rejuvenescimento facial e corporal, ideais para manutenção da beleza e prevenção do envelhecimento.</p>
+                        <ul class="text-sm text-texto-dark grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                            <li class="flex items-center"><i class="ph ph-check text-pessego-500 mr-2"></i> Toxina Botulínica (Botox)</li>
+                            <li class="flex items-center"><i class="ph ph-check text-pessego-500 mr-2"></i> Preenchimento com Ácido Hialurônico</li>
+                            <li class="flex items-center"><i class="ph ph-check text-pessego-500 mr-2"></i> Bioestimuladores de Colágeno</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO CONTATO -->
+        <section id="contato" class="py-20 bg-pessego-100/30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2">
+                        
+                        <!-- Info de Contato -->
+                        <div class="bg-pessego-500 p-10 text-white flex flex-col justify-center">
+                            <h3 class="text-3xl font-serif mb-2">Agende sua Avaliação</h3>
+                            <p class="text-pessego-100 mb-8">Dê o primeiro passo para a sua transformação. Entre em contato e agende uma consulta em Blumenau.</p>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-start">
+                                    <i class="ph ph-map-pin text-2xl mt-1 mr-4 text-pessego-100"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Consultório Sede</h4>
+                                        <p class="text-pessego-100">Blumenau - SC<br>Edifício Médico Exemplo, Sala 100<br>Rua Fictícia, 123 - Centro</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <i class="ph ph-whatsapp-logo text-2xl mr-4 text-pessego-100"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">WhatsApp</h4>
+                                        <p class="text-pessego-100">(47) 99999-9999</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <i class="ph ph-instagram-logo text-2xl mr-4 text-pessego-100"></i>
+                                    <div>
+                                        <h4 class="font-semibold text-lg">Instagram</h4>
+                                        <p class="text-pessego-100">@dramarina.plastica</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-10">
+                                <a href="https://wa.me/5547999999999" target="_blank" class="inline-block bg-white text-pessego-600 font-semibold px-8 py-3 rounded-full hover:bg-pessego-50 transition-colors shadow-lg">
+                                    Chamar no WhatsApp Agora
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Formulário Simplificado (Visual) -->
+                        <div class="p-10 lg:p-12">
+                            <h3 class="text-2xl font-serif text-titulo mb-6">Envie uma Mensagem</h3>
+                            <form action="#" method="POST" class="space-y-6">
+                                <div>
+                                    <label for="nome" class="block text-sm font-medium text-texto-dark">Nome completo</label>
+                                    <input type="text" id="nome" class="mt-1 block w-full border-b border-gray-300 py-2 focus:outline-none focus:border-pessego-400 focus:ring-0 bg-transparent transition-colors" placeholder="Seu nome">
+                                </div>
+                                <div>
+                                    <label for="telefone" class="block text-sm font-medium text-texto-dark">Telefone / WhatsApp</label>
+                                    <input type="tel" id="telefone" class="mt-1 block w-full border-b border-gray-300 py-2 focus:outline-none focus:border-pessego-400 focus:ring-0 bg-transparent transition-colors" placeholder="(47) 90000-0000">
+                                </div>
+                                <div>
+                                    <label for="interesse" class="block text-sm font-medium text-texto-dark">Área de Interesse</label>
+                                    <select id="interesse" class="mt-1 block w-full border-b border-gray-300 py-2 focus:outline-none focus:border-pessego-400 focus:ring-0 bg-transparent text-texto-light">
+                                        <option>Selecione um procedimento...</option>
+                                        <option>Contorno Corporal (Lipo/Abdomen)</option>
+                                        <option>Cirurgia de Mama</option>
+                                        <option>Cirurgia de Glúteo</option>
+                                        <option>Procedimentos Estéticos (Botox/Preenchimento)</option>
+                                        <option>Outros</option>
+                                    </select>
+                                </div>
+                                <button type="button" class="w-full bg-titulo hover:bg-black text-white font-medium py-3 rounded-xl transition-colors mt-4">
+                                    Solicitar Contato
+                                </button>
+                                <p class="text-xs text-texto-light mt-4 text-center">Os dados enviados são mantidos em sigilo médico absoluto.</p>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- RODAPÉ -->
+    <!-- CORREÇÃO: Rodapé alterado para fundo claro para permitir o texto em PRETO com boa leitura -->
+    <footer class="bg-white text-texto-dark py-12 border-t border-pessego-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center border-b border-pessego-100 pb-8 mb-8">
+                <div class="flex items-center gap-3 mb-4 md:mb-0">
+                    <div class="w-10 h-10 rounded-full bg-pessego-400 flex items-center justify-center text-white font-serif italic font-bold text-xl shadow-sm">
+                        M
+                    </div>
+                    <div>
+                        <!-- CORREÇÃO: Nome da Doutora agora está em PRETO (text-black) -->
+                        <span class="font-serif font-semibold text-lg tracking-wide block text-black">Dra. Marina Schneider</span>
+                        <span class="text-xs text-pessego-600 uppercase tracking-widest font-medium">Cirurgia Plástica</span>
+                    </div>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-texto-light hover:text-pessego-500 transition-colors"><i class="ph ph-instagram-logo text-2xl"></i></a>
+                    <a href="#" class="text-texto-light hover:text-pessego-500 transition-colors"><i class="ph ph-facebook-logo text-2xl"></i></a>
+                    <a href="#" class="text-texto-light hover:text-pessego-500 transition-colors"><i class="ph ph-whatsapp-logo text-2xl"></i></a>
+                </div>
+            </div>
+            
+            <div class="text-center md:text-left flex flex-col md:flex-row justify-between items-center text-texto-light text-sm">
+                <p>&copy; 2026 Dra. Marina Schneider. Todos os direitos reservados.</p>
+                <div class="mt-4 md:mt-0 flex flex-col md:flex-row md:space-x-8 text-center md:text-right">
+                    <span>CRM-SC 99.999 | RQE 0000</span>
+                    <span>CRM-SP 888.888 | RQE 0000</span>
+                </div>
+            </div>
+            <div class="text-center text-xs text-texto-light mt-6 max-w-3xl mx-auto opacity-80">
+                <p>As informações contidas neste site têm caráter puramente informativo e não substituem a consulta médica presencial. Resultados de procedimentos cirúrgicos variam de indivíduo para indivíduo.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script para o Menu Mobile -->
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const links = menu.querySelectorAll('a');
+
+        // Abre/Fecha o menu ao clicar no botão hambúrguer
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Fecha o menu ao clicar em qualquer link (para celular)
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Efeito de sombra no Header ao dar scroll
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 10) {
+                header.classList.add('shadow-sm');
+            } else {
+                header.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+</body>
+</html>
