@@ -305,28 +305,21 @@
 
     <div class="form-container">
 
-        <div class="step active" id="step-0">
+        <div class="step active" id="step-1">
+            <div class="step-number">1 de 7</div>
             <h2>Bem-vindo(a) ao Atendimento da Dra. Marina Schneider.</h2>
             <p class="subtitle">Para que nossa equipe possa conhecer melhor o que você busca e orientar você sobre os próximos passos, responda algumas perguntas rápidas.<br><br><strong>Leva menos de 1 minuto.</strong></p>
-            <div class="btn-container">
-                <button class="btn" onclick="nextStep(1)">Começar ➔</button>
-            </div>
-        </div>
-
-        <div class="step" id="step-1">
-            <div class="step-number">1 de 7</div>
-            <h2>Vamos começar pelo básico</h2>
 
             <div class="input-group">
-                <label>1. Como você gostaria de ser chamado(a)?</label>
+                <label>Como você gostaria de ser chamado(a)? <span style="color: var(--text-light); font-weight: 400;">(opcional)</span></label>
                 <div class="options-grid" style="grid-template-columns: 1fr 1fr 1fr; margin-bottom: 10px;">
                     <label class="option-card" onclick="selectPronoun(this)">
-                        <input type="radio" name="pronome" value="Senhor">
-                        <strong>Senhor</strong>
+                        <input type="radio" name="pronome" value="Sr.">
+                        <strong>Sr.</strong>
                     </label>
                     <label class="option-card" onclick="selectPronoun(this)">
-                        <input type="radio" name="pronome" value="Senhora">
-                        <strong>Senhora</strong>
+                        <input type="radio" name="pronome" value="Sra.">
+                        <strong>Sra.</strong>
                     </label>
                     <label class="option-card" onclick="selectPronoun(this, true)">
                         <input type="radio" name="pronome" value="Outro">
@@ -339,14 +332,13 @@
             </div>
 
             <div class="input-group">
-                <label>2. Qual o seu nome?</label>
+                <label>Qual o seu nome?</label>
                 <input type="text" id="nome" placeholder="Seu nome">
             </div>
 
-            <div class="error-msg" id="error-step-1">Por favor, preencha como quer ser chamado e seu nome.</div>
+            <div class="error-msg" id="error-step-1">Por favor, preencha seu nome.</div>
             <div class="btn-container">
-                <button class="btn btn-secondary" onclick="prevStep(0)">Voltar</button>
-                <button class="btn" onclick="validateStep1()">Próximo ➔</button>
+                <button class="btn" onclick="validateStep1()">Começar ➔</button>
             </div>
         </div>
 
@@ -562,6 +554,10 @@
             nextStep(stepIndex);
         }
 
+        // A primeira pergunta já aparece ativa no HTML (sem precisar clicar em
+        // "Começar" antes), então acertamos a barra de progresso pra refletir isso.
+        updateProgress(1);
+
         // Lógica do Passo 1: Pronome
         function selectPronoun(element, isOutro = false) {
             const siblings = element.parentElement.querySelectorAll('.option-card');
@@ -584,17 +580,19 @@
             const nome = document.getElementById('nome').value.trim();
             const pronomeSelected = document.querySelector('input[name="pronome"]:checked');
 
-            let pronomeValido = false;
-            if (pronomeSelected) {
-                if (pronomeSelected.value === 'Outro') {
-                    pronomeValido = document.getElementById('pronome_outro').value.trim() !== '';
-                } else {
-                    pronomeValido = true;
-                }
+            // O tratamento (Sr./Sra./Outro) é opcional. Só validamos o campo de
+            // texto "Outro" quando a pessoa marcou essa opção mas não escreveu nada.
+            let pronomeValido = true;
+            if (pronomeSelected && pronomeSelected.value === 'Outro') {
+                pronomeValido = document.getElementById('pronome_outro').value.trim() !== '';
             }
 
             if (nome === '' || !pronomeValido) {
-                document.getElementById('error-step-1').style.display = 'block';
+                const errorEl = document.getElementById('error-step-1');
+                errorEl.textContent = nome === ''
+                    ? 'Por favor, preencha seu nome.'
+                    : 'Por favor, escreva como prefere ser chamado(a), ou desmarque a opção "Outro".';
+                errorEl.style.display = 'block';
             } else {
                 document.getElementById('error-step-1').style.display = 'none';
                 nextStep(2);
@@ -707,8 +705,23 @@
             const expectativa = document.getElementById('expectativa').value;
 
             // --- LÓGICA DE ALERTAS E ORÇAMENTO ---
-            const custoPorProcedimento = 14000;
-            const custoEstimadoTotal = checkboxesRegiao.length * custoPorProcedimento;
+            // Valor estimado por região selecionada.
+            // Procedimentos estéticos e "outra região" entram com um valor baixo
+            // de propósito, pra não disparar o alerta de orçamento à toa
+            // (cosmiatria costuma custar bem menos que uma cirurgia, e "outra
+            // região" é um texto livre que a equipe ainda não sabe o que é).
+            const custoPorRegiao = {
+                "Mamas": 14000,
+                "Abdome": 14000,
+                "Contorno corporal": 14000,
+                "Face": 14000,
+                "Procedimentos estéticos": 500,
+                "Outra região": 500
+            };
+            let custoEstimadoTotal = 0;
+            checkboxesRegiao.forEach(cb => {
+                custoEstimadoTotal += custoPorRegiao[cb.value] ?? 14000;
+            });
 
             const boxOrcamento = document.getElementById('alerta-orcamento');
             const boxOnline = document.getElementById('alerta-online');
