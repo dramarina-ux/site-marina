@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Atendimento | Dra. Marina Schneider</title>
+    <link rel="icon" type="image/png" href="../assets/images/logo/favicon.png">
+    <style>
+        :root {
+            --primary: #b59882;
+            --primary-hover: #9c806b;
+            --bg-color: #fdfcfb;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #e0e0e0;
+            --warning-bg: #fff9e6;
+            --warning-border: #f1c40f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            height: 100vh;
+            height: 100dvh; /* Adapta-se melhor no mobile ao abrir o teclado/barra de endereço */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 14px;
+            left: 16px;
+            z-index: 200;
+            font-size: 0.82em;
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 20px;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .back-link:hover {
+            background: rgba(181, 152, 130, 0.12);
+            color: var(--primary);
+        }
+
+        .form-container {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .step {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(30px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px;
+            overflow-y: auto; /* Permite rolagem interna caso o conteúdo seja maior que a tela */
+        }
+
+        .step.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            z-index: 10;
+        }
+
+        .step-number {
+            font-size: 0.9em;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 2em;
+            font-weight: 300;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        p.subtitle {
+            font-size: 1.1em;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            max-height: 55vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+                max-height: none; /* Remove o limite de altura para fluir livremente */
+            }
+            h2 { font-size: 1.6em; }
+
+            .step {
+                justify-content: flex-start; /* Joga todo o conteúdo mais para cima no celular */
+                padding-top: 10vh; /* Margem superior amigável */
+                padding-bottom: 150px; /* Espaço extra no final para o teclado não cobrir os botões */
+            }
+        }
+
+        .option-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #fff;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-card:hover {
+            background: #fcf9f7;
+            border-color: var(--primary);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary);
+            background-color: rgba(181, 152, 130, 0.1);
+            box-shadow: 0 0 0 1px var(--primary);
+        }
+
+        .option-card strong {
+            font-size: 1.05em;
+            font-weight: 500;
+        }
+
+        .option-card input {
+            display: none;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .input-group input[type="text"],
+        .input-group input[type="tel"],
+        .input-group textarea {
+            width: 100%;
+            padding: 12px 0;
+            font-size: 1.2em;
+            border: none;
+            border-bottom: 2px solid var(--border);
+            background: transparent;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.3s;
+            resize: none;
+        }
+
+        .input-group textarea {
+            min-height: 80px;
+            line-height: 1.4;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-bottom-color: var(--primary);
+        }
+
+        .hidden-input {
+            display: none;
+            margin-top: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+        .hidden-input.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn:hover { background-color: var(--primary-hover); }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-secondary {
+            background-color: #f1f1f1;
+            color: var(--text-dark);
+        }
+        .btn-secondary:hover { background-color: #e2e2e2; }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.4s ease;
+            z-index: 100;
+        }
+
+        .error-msg {
+            color: #e74c3c;
+            font-size: 0.9em;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .final-message {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        .final-message h2 { margin-bottom: 15px; font-size: 1.8em; }
+        .final-message p { margin-bottom: 10px; font-size: 1.05em; line-height: 1.4; color: var(--text-dark); }
+        .final-message .signature { margin-top: 15px; font-style: italic; color: var(--primary); font-size: 0.95em; }
+
+        .alert-box {
+            background-color: var(--warning-bg);
+            border-left: 4px solid var(--warning-border);
+            padding: 12px 15px;
+            margin: 12px 0;
+            text-align: left;
+            border-radius: 4px;
+            display: none; /* Oculto por padrão */
+        }
+        .alert-box p {
+            margin: 0;
+            font-size: 0.95em;
+            color: #444;
+            line-height: 1.4;
+        }
+
+    </style>
+</head>
+<body>
+
+    <a href="../index.html" class="back-link">&larr; Voltar ao site</a>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="form-container">
+
+        <div class="step active" id="step-0">
+            <h2>Bem-vindo(a) ao Atendimento da Dra. Marina Schneider.</h2>
+            <p class="subtitle">Para que nossa equipe possa conhecer melhor o que você busca e orientar você sobre os próximos passos, responda algumas perguntas rápidas.<br><br><strong>Leva menos de 1 minuto.</strong></p>
+            <div class="btn-container">
+                <button class="btn" onclick="nextStep(1)">Começar ➔</button>
+            </div>
+        </div>
+
+        <div class="step" id="step-1">
+            <div class="step-number">1 de 7</div>
+            <h2>Vamos começar pelo básico</h2>
+
+            <div class="input-group">
+                <label>1. Como você gostaria de ser chamado(a)?</label>
+                <div class="options-grid" style="grid-template-columns: 1fr 1fr 1fr; margin-bottom: 10px;">
+                    <label class="option-card" onclick="selectPronoun(this)">
+                        <input type="radio" name="pronome" value="Senhor">
+                        <strong>Senhor</strong>
+                    </label>
+                    <label class="option-card" onclick="selectPronoun(this)">
+                        <input type="radio" name="pronome" value="Senhora">
+                        <strong>Senhora</strong>
+                    </label>
+                    <label class="option-card" onclick="selectPronoun(this, true)">
+                        <input type="radio" name="pronome" value="Outro">
+                        <strong>Outro</strong>
+                    </label>
+                </div>
+                <div class="hidden-input" id="container-pronome-outro">
+                    <input type="text" id="pronome_outro" placeholder="Como prefere?">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>2. Qual o seu nome?</label>
+                <input type="text" id="nome" placeholder="Seu nome">
+            </div>
+
+            <div class="error-msg" id="error-step-1">Por favor, preencha como quer ser chamado e seu nome.</div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep(0)">Voltar</button>
+                <button class="btn" onclick="validateStep1()">Próximo ➔</button>
+            </div>
+        </div>
+
+        <div class="step" id="step-2">
+            <div class="step-number">2 de 7</div>
+            <h2>3. Qual região(ões) você gostaria de tratar ou transformar?</h2>
+            <p style="margin-bottom: 15px; color: var(--text-light);">Pode selecionar mais de uma opção.</p>
+
+            <div class="options-grid">
+                <label class="option-card" onclick="toggleRegiaoCheckbox(this)">
+                    <input type="checkbox" name="regiao" value="Mamas">
+                    <strong>Mamas</strong>
+                </label>
+                <label class="option-card" onclick="toggleRegiaoCheckbox(this)">
+                    <input type="checkbox" name="regiao" value="Abdome">
+                    <strong>Abdome</strong>
+                </label>
+                <label class="option-card" onclick="toggleRegiaoCheckbox(this)">
+                    <input type="checkbox" name="regiao" value="Contorno corporal">
+                    <strong>Contorno corporal</strong>
+                </label>
+                <label class="option-card" onclick="toggleRegiaoCheckbox(this)">
+                    <input type="checkbox" name="regiao" value="Face">
+                    <strong>Face</strong>
+                </label>
+                <label class="option-card" onclick="toggleRegiaoCheckbox(this)">
+                    <input type="checkbox" name="regiao" value="Procedimentos estéticos">
+                    <strong>Procedimentos estéticos</strong>
+                </label>
+                <label class="option-card" onclick="toggleRegiaoCheckbox(this, true)">
+                    <input type="checkbox" name="regiao" value="Outra região">
+                    <strong>Outra região</strong>
+                </label>
+            </div>
+
+            <div class="input-group hidden-input" id="container-regiao-outra" style="margin-top: 20px;">
+                <input type="text" id="regiao_outra" placeholder="Qual seria a outra região?">
+            </div>
+
+            <div class="error-msg" id="error-step-2">Selecione pelo menos uma região.</div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep(1)">Voltar</button>
+                <button class="btn" onclick="validateStep2()">Próximo ➔</button>
+            </div>
+        </div>
+
+        <div class="step" id="step-3">
+            <div class="step-number">3 de 7</div>
+            <h2>4. O que mais incomoda você nessa região?</h2>
+
+            <div class="input-group">
+                <textarea id="incomodo" placeholder="Descreva brevemente o que gostaria de mudar..."></textarea>
+            </div>
+
+            <div class="error-msg" id="error-step-3">Por favor, escreva algo sobre o que a incomoda.</div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep(2)">Voltar</button>
+                <button class="btn" onclick="validateStep3()">Próximo ➔</button>
+            </div>
+        </div>
+
+        <div class="step" id="step-4">
+            <div class="step-number">4 de 7</div>
+            <h2>5. Você está decidido a resolver esse problema?</h2>
+
+            <div class="options-grid" style="grid-template-columns: 1fr;">
+                <label class="option-card" onclick="selectRadioAndAdvance(this, 'decisao', 5)">
+                    <input type="radio" name="decisao" value="Sim, o quanto antes">
+                    <strong>Sim, o quanto antes</strong>
+                </label>
+                <label class="option-card" onclick="selectRadioAndAdvance(this, 'decisao', 5)">
+                    <input type="radio" name="decisao" value="Ainda não tenho certeza">
+                    <strong>Ainda não tenho certeza</strong>
+                </label>
+                <label class="option-card" onclick="selectRadioAndAdvance(this, 'decisao', 5)">
+                    <input type="radio" name="decisao" value="Não, apenas quero tirar dúvidas">
+                    <strong>Não, apenas quero tirar dúvidas</strong>
+                </label>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep(3)">Voltar</button>
+            </div>
+        </div>
+
+        <div class="step" id="step-5">
+            <div class="step-number">5 de 7</div>
+            <h2>6. Qual faixa de investimento você considera para o seu procedimento?</h2>
+
+            <div class="options-grid" style="grid-template-columns: 1fr;">
+                <label class="option-card" onclick="selectRadioAndAdvance(this, 'investimento', 6)">
+                    <!-- Values representam o teto da faixa para lógica condicional -->
+                    <input type="radio" name="investimento" value="10000" data-label="Até R$ 10.000">
+                    <strong>Até R$ 10.000</strong>
+                </label>
+                <label class="option-card" onclick="selectRadioAndAdvance(this, 'investimento', 6)">
+                    <input type="radio" name="investimento" value="20000" data-label="R$ 10.000 a R$ 20.000">
+                    <strong>R$ 10.000 a R$ 20.000</strong>
+                </label>
+                <label class="option-card" onclick="selectRadioAndAdvance(this, 'investimento', 6)">
+                    <input type="radio" name="investimento" value="40000" data-label="R$ 20.000 a R$ 40.000">
+                    <strong>R$ 20.000 a R$ 40.000</strong>
+                </label>
+                <label class="option-card" onclick="selectRadioAndAdvance(this, 'investimento', 6)">
+                    <input type="radio" name="investimento" value="999999" data-label="Acima de R$ 40.000">
+                    <strong>Acima de R$ 40.000</strong>
+                </label>
+                <label class="option-card" onclick="selectRadioAndAdvance(this, 'investimento', 6)">
+                    <input type="radio" name="investimento" value="999999" data-label="Ainda não tenho uma faixa definida">
+                    <strong>Ainda não tenho uma faixa definida</strong>
+                </label>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep(4)">Voltar</button>
+            </div>
+        </div>
+
+        <div class="step" id="step-6">
+            <div class="step-number">6 de 7</div>
+            <h2>7. Onde você gostaria de realizar sua consulta?</h2>
+
+            <div class="options-grid" style="grid-template-columns: 1fr;">
+                <label class="option-card" onclick="selectRadioAndAdvance(this, 'local', 7)">
+                    <input type="radio" name="local" value="Blumenau">
+                    <strong>Blumenau</strong>
+                </label>
+                <label class="option-card" onclick="selectRadioAndAdvance(this, 'local', 7)">
+                    <input type="radio" name="local" value="São Paulo">
+                    <strong>São Paulo</strong>
+                </label>
+                <label class="option-card" onclick="selectRadioAndAdvance(this, 'local', 7)">
+                    <input type="radio" name="local" value="Online">
+                    <strong>Online</strong>
+                </label>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep(5)">Voltar</button>
+            </div>
+        </div>
+
+        <div class="step" id="step-7">
+            <div class="step-number">7 de 7</div>
+            <h2>8. O que você espera encontrar em uma consulta de cirurgia plástica?</h2>
+
+            <div class="input-group">
+                <textarea id="expectativa" placeholder="Confiança, empatia, tirar dúvidas..."></textarea>
+            </div>
+
+            <div class="error-msg" id="error-step-7">Por favor, partilhe um pouco sobre a sua expectativa.</div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep(6)">Voltar</button>
+                <button class="btn" onclick="validateAndSubmit()">Concluir ➔</button>
+            </div>
+        </div>
+
+        <div class="step" id="step-8">
+            <div class="final-message">
+                <h2>Formulário concluído! ✨</h2>
+
+                <div id="msg-padrao">
+                    <p>Obrigada por compartilhar um pouco sobre o que você está buscando.</p>
+                    <p>Nossa equipe receberá suas respostas e entrará em contato pelo WhatsApp para orientar você sobre os próximos passos.</p>
+                </div>
+
+                <!-- ALERTA DE ORÇAMENTO (Dinâmico) -->
+                <div class="alert-box" id="alerta-orcamento">
+                    <p><strong>Com carinho:</strong> Notamos que o investimento para as regiões escolhidas costuma ser um pouco superior à faixa que você selecionou. Deseja prosseguir com a nossa equipe mesmo assim?</p>
+                </div>
+
+                <!-- ALERTA DE CONSULTA ONLINE (Dinâmico) -->
+                <div class="alert-box" id="alerta-online" style="border-color: var(--primary); background-color: rgba(181, 152, 130, 0.05);">
+                    <p><strong>Consulta Online:</strong> Ela possui um valor de consulta que já inclui o seu retorno presencial em até 60 dias (Blumenau ou SP). Tudo bem para você?</p>
+                </div>
+
+                <div class="signature">
+                    Dra. Marina Schneider<br>
+                    Cirurgiã Plástica<br>
+                    <strong>Sua história é única. Seu planejamento também.</strong>
+                </div>
+
+                <div class="btn-container" style="justify-content: center; margin-top: 20px;">
+                    <a href="#" id="whatsapp-link" class="btn" target="_blank" rel="noopener noreferrer" style="background-color: #25D366; width: 100%; max-width: 400px;">
+                        Enviar mensagem
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const totalSteps = 7;
+
+        function updateProgress(stepIndex) {
+            const progress = (stepIndex / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function nextStep(stepIndex) {
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById(`step-${stepIndex}`).classList.add('active');
+
+            if(stepIndex > 0 && stepIndex <= totalSteps) {
+                updateProgress(stepIndex);
+            } else if (stepIndex === 8) {
+                document.getElementById('progressBar').style.width = '100%';
+            }
+        }
+
+        function prevStep(stepIndex) {
+            nextStep(stepIndex);
+        }
+
+        // Lógica do Passo 1: Pronome
+        function selectPronoun(element, isOutro = false) {
+            const siblings = element.parentElement.querySelectorAll('.option-card');
+            siblings.forEach(el => el.classList.remove('selected'));
+
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
+
+            const containerOutro = document.getElementById('container-pronome-outro');
+            if (isOutro) {
+                containerOutro.classList.add('active');
+                setTimeout(() => document.getElementById('pronome_outro').focus(), 100);
+            } else {
+                containerOutro.classList.remove('active');
+            }
+            document.getElementById('error-step-1').style.display = 'none';
+        }
+
+        function validateStep1() {
+            const nome = document.getElementById('nome').value.trim();
+            const pronomeSelected = document.querySelector('input[name="pronome"]:checked');
+
+            let pronomeValido = false;
+            if (pronomeSelected) {
+                if (pronomeSelected.value === 'Outro') {
+                    pronomeValido = document.getElementById('pronome_outro').value.trim() !== '';
+                } else {
+                    pronomeValido = true;
+                }
+            }
+
+            if (nome === '' || !pronomeValido) {
+                document.getElementById('error-step-1').style.display = 'block';
+            } else {
+                document.getElementById('error-step-1').style.display = 'none';
+                nextStep(2);
+            }
+        }
+
+        // Lógica do Passo 2: Regiões
+        function toggleRegiaoCheckbox(element, isOutro = false) {
+            const checkbox = element.querySelector('input');
+            const containerOutra = document.getElementById('container-regiao-outra');
+
+            setTimeout(() => {
+                if (checkbox.checked) {
+                    element.classList.add('selected');
+                    if(isOutro) {
+                        containerOutra.classList.add('active');
+                        setTimeout(() => document.getElementById('regiao_outra').focus(), 100);
+                    }
+                } else {
+                    element.classList.remove('selected');
+                    if(isOutro) {
+                        containerOutra.classList.remove('active');
+                    }
+                }
+                document.getElementById('error-step-2').style.display = 'none';
+            }, 50);
+        }
+
+        function validateStep2() {
+            const selecionados = document.querySelectorAll('input[name="regiao"]:checked');
+            let valido = selecionados.length > 0;
+
+            // Verifica se marcou "Outro" e se preencheu
+            const selecionouOutro = Array.from(selecionados).some(cb => cb.value === "Outra região");
+            if (selecionouOutro && document.getElementById('regiao_outra').value.trim() === '') {
+                valido = false;
+            }
+
+            if (!valido) {
+                document.getElementById('error-step-2').style.display = 'block';
+            } else {
+                document.getElementById('error-step-2').style.display = 'none';
+                nextStep(3);
+            }
+        }
+
+        function validateStep3() {
+            const incomodo = document.getElementById('incomodo').value.trim();
+            if (incomodo === '') {
+                document.getElementById('error-step-3').style.display = 'block';
+            } else {
+                document.getElementById('error-step-3').style.display = 'none';
+                nextStep(4);
+            }
+        }
+
+        function selectRadioAndAdvance(element, inputName, nextStepIndex) {
+            const siblings = element.parentElement.querySelectorAll('.option-card');
+            siblings.forEach(el => el.classList.remove('selected'));
+
+            element.classList.add('selected');
+            element.querySelector('input').checked = true;
+
+            setTimeout(() => {
+                nextStep(nextStepIndex);
+            }, 300);
+        }
+
+        function validateAndSubmit() {
+            const expectativa = document.getElementById('expectativa').value.trim();
+
+            if (expectativa === '') {
+                document.getElementById('error-step-7').style.display = 'block';
+            } else {
+                document.getElementById('error-step-7').style.display = 'none';
+                processarFormulario();
+            }
+        }
+
+        function processarFormulario() {
+            // Recolher Dados
+            const pronomeSelected = document.querySelector('input[name="pronome"]:checked');
+            let pronome = pronomeSelected ? pronomeSelected.value : "";
+            if (pronome === "Outro") {
+                pronome = document.getElementById('pronome_outro').value;
+            }
+
+            const nome = document.getElementById('nome').value;
+
+            // Regiões (Tratando Multi-seleção)
+            const checkboxesRegiao = document.querySelectorAll('input[name="regiao"]:checked');
+            let regioesArr = [];
+            checkboxesRegiao.forEach(cb => {
+                if(cb.value === "Outra região") {
+                    regioesArr.push(document.getElementById('regiao_outra').value);
+                } else {
+                    regioesArr.push(cb.value);
+                }
+            });
+            const regiaoTexto = regioesArr.join(', ');
+
+            const incomodo = document.getElementById('incomodo').value;
+            const decisao = document.querySelector('input[name="decisao"]:checked')?.value || "Não informado";
+
+            const invRadio = document.querySelector('input[name="investimento"]:checked');
+            const invLabel = invRadio ? invRadio.getAttribute('data-label') : "Não informado";
+            const invMax = invRadio ? parseInt(invRadio.value) : 999999;
+
+            const local = document.querySelector('input[name="local"]:checked')?.value || "Não informado";
+            const expectativa = document.getElementById('expectativa').value;
+
+            // --- LÓGICA DE ALERTAS E ORÇAMENTO ---
+            const custoPorProcedimento = 14000;
+            const custoEstimadoTotal = checkboxesRegiao.length * custoPorProcedimento;
+
+            const boxOrcamento = document.getElementById('alerta-orcamento');
+            const boxOnline = document.getElementById('alerta-online');
+            const msgPadrao = document.getElementById('msg-padrao');
+            const btnWhatsapp = document.getElementById('whatsapp-link');
+
+            let precisaConfirmacao = false;
+
+            if (custoEstimadoTotal > invMax) {
+                // Estoura o orçamento
+                boxOrcamento.style.display = 'block';
+                msgPadrao.style.display = 'none'; // Esconde a mensagem padrão para poupar espaço
+                precisaConfirmacao = true;
+            } else {
+                // Dentro do orçamento
+                boxOrcamento.style.display = 'none';
+                msgPadrao.style.display = 'block';
+            }
+
+            // Alerta Online
+            if (local === 'Online') {
+                boxOnline.style.display = 'block';
+                precisaConfirmacao = true;
+                // Se só tem o alerta online, pode esconder um parágrafo da msg padrão para caber bem
+                if(custoEstimadoTotal <= invMax) {
+                     msgPadrao.innerHTML = "<p>Obrigada por compartilhar! Nossa equipe entrará em contato para orientar você sobre os próximos passos.</p>";
+                }
+            } else {
+                boxOnline.style.display = 'none';
+            }
+
+            // Define o texto do botão baseado nos avisos
+            if (precisaConfirmacao) {
+                btnWhatsapp.innerText = "Sim, quero prosseguir";
+            } else {
+                btnWhatsapp.innerText = "Enviar mensagem";
+            }
+
+            // Formatar mensagem WhatsApp
+            let mensagemWhatsapp = "Olá! Preenchi o formulário de triagem e gostaria de conversar sobre os próximos passos.%0A%0A";
+            mensagemWhatsapp += `*1. Tratamento:* ${pronome}%0A`;
+            mensagemWhatsapp += `*2. Nome:* ${nome}%0A`;
+            mensagemWhatsapp += `*3. Região(ões):* ${regiaoTexto}%0A`;
+            mensagemWhatsapp += `*4. O que incomoda:* ${incomodo}%0A`;
+            mensagemWhatsapp += `*5. Decisão:* ${decisao}%0A`;
+            mensagemWhatsapp += `*6. Investimento:* ${invLabel}%0A`;
+            mensagemWhatsapp += `*7. Local:* ${local}%0A`;
+            mensagemWhatsapp += `*8. Expectativas:* ${expectativa}`;
+
+            const numeroTelefone = "5547992421665";
+            const linkWpp = `https://api.whatsapp.com/send?phone=${numeroTelefone}&text=${mensagemWhatsapp}`;
+
+            btnWhatsapp.href = linkWpp;
+
+            // Avança para tela final
+            nextStep(8);
+        }
+
+    </script>
+</body>
+</html>
