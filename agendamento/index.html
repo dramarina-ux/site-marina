@@ -159,6 +159,19 @@
             font-weight: 500;
         }
 
+        .option-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .option-card small {
+            font-size: 0.85em;
+            font-weight: 400;
+            color: var(--text-dark);
+            line-height: 1.3;
+        }
+
         .option-card input {
             display: none;
         }
@@ -350,23 +363,38 @@
             <div class="options-grid">
                 <label class="option-card" onclick="toggleRegiaoCheckbox(this)">
                     <input type="checkbox" name="regiao" value="Mamas">
-                    <strong>Mamas</strong>
+                    <span class="option-text">
+                        <strong>Mamas</strong>
+                        <small>Aumento, redução, mastopexia</small>
+                    </span>
                 </label>
                 <label class="option-card" onclick="toggleRegiaoCheckbox(this)">
                     <input type="checkbox" name="regiao" value="Abdome">
-                    <strong>Abdome</strong>
+                    <span class="option-text">
+                        <strong>Abdome</strong>
+                        <small>Abdominoplastia, lipoaspiração</small>
+                    </span>
                 </label>
                 <label class="option-card" onclick="toggleRegiaoCheckbox(this)">
                     <input type="checkbox" name="regiao" value="Contorno corporal">
-                    <strong>Contorno corporal</strong>
+                    <span class="option-text">
+                        <strong>Contorno corporal</strong>
+                        <small>Lipoaspiração, lipoenxertia, braços</small>
+                    </span>
                 </label>
                 <label class="option-card" onclick="toggleRegiaoCheckbox(this)">
                     <input type="checkbox" name="regiao" value="Face">
-                    <strong>Face</strong>
+                    <span class="option-text">
+                        <strong>Face</strong>
+                        <small>Blefaroplastia, otoplastia</small>
+                    </span>
                 </label>
                 <label class="option-card" onclick="toggleRegiaoCheckbox(this)">
                     <input type="checkbox" name="regiao" value="Procedimentos estéticos">
-                    <strong>Procedimentos estéticos</strong>
+                    <span class="option-text">
+                        <strong>Procedimentos estéticos</strong>
+                        <small>Botox, preenchimento, bioestimulador</small>
+                    </span>
                 </label>
                 <label class="option-card" onclick="toggleRegiaoCheckbox(this, true)">
                     <input type="checkbox" name="regiao" value="Outra região">
